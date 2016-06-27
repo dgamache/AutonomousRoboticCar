@@ -1,60 +1,66 @@
-#define LFM 11
-#define LBM 4
-#define RBM 5
-#define RFM 10
+/*
+ * Tutorial 1a: Motor Driver
+ * 
+ * Drives two motors forward.
+ *
+ * The circuit:
+ *  - 6 pins connected to the L298 Motor Driver
+ *
+ * created 27 Sep 2013
+ * by Blaise Jarrett
+ *
+ * This example code is in the public domain.
+ *
+ */
 
-#define LFM2 6
-#define LBM2 9
-#define RBM2 5
-#define RFM2 10
+// include our motor code
+#include "motor.h"
 
-void setup() {
-  // put your setup code here, to run once:
-#if 1
-  pinMode(LFM, OUTPUT);   // sets cthe pin as output
-  pinMode(LBM, OUTPUT);   // sets the pin as output
-  pinMode(RBM, OUTPUT);   // sets the pin as output
-  pinMode(RFM, OUTPUT);   // sets the pin as output
-  pinMode(LFM2, OUTPUT);   // sets cthe pin as output
-  pinMode(LBM2, OUTPUT);   // sets the pin as output
-  pinMode(RBM2, OUTPUT);   // sets the pin as output
-  pinMode(RFM2, OUTPUT);   // sets the pin as output
-#else
-  pinMode (10, OUTPUT);
-  pinMode (8, OUTPUT);
-  pinMode (7, OUTPUT);
-#endif
+// The Right Front Motors Enable Pin
+// Labelled on the motor driver as ENA
+// Be carful of PWM Timers
+const int motorRENPin = 4;
+// The Right Motors IN1 Pin
+// Labelled on the motor driver as IN1
+const int motorRIN2Pin = 5;
+// The Right Motors IN2 Pin
+// Labelled on the motor driver as IN2
+const int motorRIN1Pin = 6;
 
+// The Left Motors Enable Pin
+// Labelled on the motor driver as ENB
+// Be carful of PWM Timers
+const int motorLENPin = 8;
+// The Left Motors IN1 Pin
+// Labelled on the motor driver as IN3
+const int motorLIN2Pin = 9;
+// The Left Motors IN2 Pin
+// Labelled on the motor driver as IN4
+const int motorLIN1Pin = 10;
+
+
+// Create two Motor objects (instances of our Motor class)
+// to drive each motor.
+Motor rightMotors(motorRIN1Pin, motorRIN2Pin, motorRENPin);
+Motor leftMotors(motorLIN1Pin, motorLIN2Pin, motorLENPin);
+
+void setup()
+{
+    // Let's just make them go forward to test the
+    // motors and the Motor class.
+    rightMotors.forward(255);
+    leftMotors.forward(255);
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-#if 1
-  digitalWrite(LFM, LOW);
-  digitalWrite(LBM, HIGH);
-  digitalWrite(RBM, LOW);
-  digitalWrite(RFM, HIGH);
-
-  digitalWrite(LFM2, LOW);
-  digitalWrite(LBM2, HIGH);
-  digitalWrite(RBM2, LOW);
-  digitalWrite(RFM2, HIGH);
-  delay(10000);
-  digitalWrite(LFM, HIGH);
-  digitalWrite(LBM, LOW);
-  digitalWrite(RBM, HIGH);
-  digitalWrite(RFM, LOW);
-
-  digitalWrite(LFM2, HIGH);
-  digitalWrite(LBM2, LOW);
-  digitalWrite(RBM2, HIGH);
-  digitalWrite(RFM2, LOW);
-  delay(10000);
-#else
-  digitalWrite(8, HIGH);
-  digitalWrite(7, LOW);
-
-  // use the enable line with PWM to control the speed
-  analogWrite(10, 255);
-#endif
+void loop()  // THe test goes in a roughly 6' circle on rug with 2 LiPo batteries
+{ 
+  rightMotors.forward(200);
+  leftMotors.forward(200);
+  delay(1400);
+  rightMotors.forward(100);
+  leftMotors.forward(100);
+  delay(1000);
+  rightMotors.forward(200);
+  leftMotors.backward(10);
+  delay(1300);
 }
